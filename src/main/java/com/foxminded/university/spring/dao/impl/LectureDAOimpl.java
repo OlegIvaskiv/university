@@ -33,6 +33,10 @@ public class LectureDAOimpl implements LectureDao {
 		this.lectureMapper = lectureMapper;
 	}
 
+	public LectureDAOimpl() {
+
+	}
+
 	@Override
 	public Optional<Lecture> getById(int id) {
 		try {

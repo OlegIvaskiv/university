@@ -23,5 +23,5 @@ public interface AudienceDao extends GenericDao<Audience> {
 
 	boolean addAudienceToLecture(Optional<Audience> audience, Optional<Lecture> lecture);
 
-	boolean removeAudiecnceFromLecture(Lecture lecture);
+	boolean removeAudiecnceFromLecture(Optional<Lecture> lecture);
 }

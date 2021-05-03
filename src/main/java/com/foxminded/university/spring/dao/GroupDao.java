@@ -20,7 +20,7 @@ public interface GroupDao extends GenericDao<Group> {
 
 	boolean create(Group t);
 
-	boolean addGroupToCourse(Group group, Course course);
+	boolean addGroupToCourse(Optional<Group> group, Optional<Course> course);
 
-	boolean removeGroupFromCourse(Group group);
+	boolean removeGroupFromCourse(Optional<Group> group);
 }

@@ -26,8 +26,12 @@ public class DateServiceImpl implements DateService {
 	}
 
 	@Override
-	public Optional<List<Date>> getAll() {
-		return dateDao.getAll();
+	public Optional<List<Date>> getAll() throws Exception {
+		if (!dateDao.getAll().isEmpty()) {
+			return dateDao.getAll();
+		} else {
+			throw new Exception("In DB no entity with this id");
+		}
 	}
 
 	@Override
@@ -55,13 +59,24 @@ public class DateServiceImpl implements DateService {
 	}
 
 	@Override
-	public boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture) {
-		return false;
+	public boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture) throws Exception {
+		if (lecture.get().getDate().equals(null)) {
+			if (!dateDao.getById(date.get().getId()).isEmpty()) {
+				return dateDao.addDateToLecture(date, lecture);
+			} else {
+				throw new Exception("In DB no entity with this id");
+			}
+		} else {
+			throw new Exception("The lecture has already has the date");
+		}
 	}
 
 	@Override
-	public boolean removeDateFromLecture(Optional<Lecture> lecture) {
-
-		return false;
+	public boolean removeDateFromLecture(Optional<Lecture> lecture) throws Exception {
+		if (!lecture.get().getDate().equals(null)) {
+			return dateDao.removeDateFromLecture(lecture);
+		} else {
+			throw new Exception("The lecture has not the date");
+		}
 	}
 }

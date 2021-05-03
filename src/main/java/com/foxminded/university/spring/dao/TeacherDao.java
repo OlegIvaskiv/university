@@ -21,11 +21,11 @@ public interface TeacherDao extends GenericDao<Teacher> {
 
 	boolean create(Teacher t);
 
-	boolean addTeacherToLecture(Teacher teacher, Lecture lecture);
+	boolean addTeacherToLecture(Optional<Teacher> teacher, Optional<Lecture> lecture);
 
-	boolean removeTeacherFromLecture(Lecture lecture);
+	boolean removeTeacherFromLecture(Optional<Lecture> lecture);
 
-	boolean addTeacherToGroup(Teacher teacher, Group group);
+	boolean addTeacherToGroup(Optional<Teacher> teacher, Optional<Group> group);
 
-	boolean removeTeacherFromGroup(Teacher teacher);
+	boolean removeTeacherFromGroup(Optional<Teacher> teacher);
 }

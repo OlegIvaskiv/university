@@ -27,8 +27,12 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Optional<List<Student>> getAll() {
-		return studentDao.getAll();
+	public Optional<List<Student>> getAll() throws Exception {
+		if (!studentDao.getAll().isEmpty()) {
+			return studentDao.getAll();
+		} else {
+			throw new Exception("In DB no entity with this id");
+		}
 	}
 
 	@Override
@@ -55,22 +59,46 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public boolean addStudentToLecture(Student student, Lecture lecture) {
-		return studentDao.addStudentToLecture(student, lecture);
+	public boolean addStudentToLecture(Optional<Student> student, Optional<Lecture> lecture) throws Exception {
+		if (lecture.get().getStudent().equals(null)) {
+			if (!studentDao.getById(student.get().getId()).isEmpty()) {
+				return studentDao.addStudentToLecture(student, lecture);
+			} else {
+				throw new Exception("In DB no entity with this id");
+			}
+		} else {
+			throw new Exception("The lecture has already has the student");
+		}
 	}
 
 	@Override
-	public boolean removeStudentFromLecture(Lecture lecture) {
-		return studentDao.removeStudentFromLecture(lecture);
+	public boolean removeStudentFromLecture(Optional<Lecture> lecture) throws Exception {
+		if (!lecture.get().getStudent().equals(null)) {
+			return studentDao.removeStudentFromLecture(lecture);
+		} else {
+			throw new Exception("The lecture has already has the audience");
+		}
 	}
 
 	@Override
-	public boolean addStudentToGroup(Student student, Group group) {
-		return studentDao.addStudentToGroup(student, group);
+	public boolean addStudentToGroup(Optional<Student> student, Optional<Group> group) throws Exception {
+		if (student.get().getGroup().equals(null)) {
+			if (!studentDao.getById(student.get().getId()).isEmpty()) {
+				return studentDao.addStudentToGroup(student, group);
+			} else {
+				throw new Exception("In DB no entity with this id");
+			}
+		} else {
+			throw new Exception("The student has already has the group");
+		}
 	}
 
 	@Override
-	public boolean removeStudentFromGroup(Student student) {
-		return studentDao.removeStudentFromGroup(student);
+	public boolean removeStudentFromGroup(Optional<Student> student) throws Exception {
+		if (!student.get().getGroup().equals(null)) {
+			return studentDao.removeStudentFromGroup(student);
+		} else {
+			throw new Exception("The lecture has already has the audience");
+		}
 	}
 }

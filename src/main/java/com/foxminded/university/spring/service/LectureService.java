@@ -11,7 +11,7 @@ import com.foxminded.university.model.Lecture;
 public interface LectureService {
 	Optional<Lecture> getById(int id) throws Exception;
 
-	Optional<List<Lecture>> getAll();
+	Optional<List<Lecture>> getAll() throws Exception;
 
 	boolean delete(int id) throws Exception;
 

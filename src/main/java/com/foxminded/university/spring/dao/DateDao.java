@@ -20,7 +20,7 @@ public interface DateDao extends GenericDao<Date> {
 
 	boolean create(Date t);
 
-	boolean addDateToLecture(Date date, Lecture lecture);
+	boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture);
 
-	boolean removeDateFromLecture(Lecture lecture);
+	boolean removeDateFromLecture(Optional<Lecture> lecture);
 }

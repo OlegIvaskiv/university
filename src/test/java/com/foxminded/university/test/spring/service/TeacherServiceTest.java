@@ -1,9 +1,8 @@
 package com.foxminded.university.test.spring.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,51 +10,50 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.foxminded.university.model.Course;
 import com.foxminded.university.model.Group;
+import com.foxminded.university.model.Lecture;
 import com.foxminded.university.model.Teacher;
-import com.foxminded.university.spring.config.UniversityConfiguration;
-import com.foxminded.university.spring.service.TeacherService;
+import com.foxminded.university.spring.dao.impl.TeacherDAOimpl;
+import com.foxminded.university.spring.service.impl.TeacherServiceImpl;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { UniversityConfiguration.class })
+@ExtendWith(MockitoExtension.class)
 public class TeacherServiceTest {
-	@Autowired
-	private TeacherService teacherService;
+	@Mock
+	private TeacherDAOimpl teacherDaoImpl;
 
-	@Autowired
-	TeacherServiceTest(TeacherService teacherService) {
-		this.teacherService = teacherService;
+	@InjectMocks
+	TeacherServiceImpl teacherServiceImpl;
+
+	TeacherServiceTest() {
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Get_Teacher_By_Id_Then_True() throws Exception {
 		Course course = new Course(1, "Math");
 		Group group = new Group(1, course, "BI-21");
-		Optional<Teacher> expectedTeacher = Optional
-				.ofNullable(new Teacher(1, group, "Elon Musk", "0101010101", "MuskSpaceX.com", "Silicon valley"));
-		Optional<Teacher> actualTeacher = Optional.ofNullable(new Teacher());
-		actualTeacher = teacherService.getById(1);
-		assertEquals(expectedTeacher, actualTeacher);
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.getById(1)).willReturn(Optional
+					.ofNullable(new Teacher(1, group, "Elon Musk", "0101010101", "MuskSpaceX.com", "Silicon valley")));
+		});
 	}
 
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Student_By_Id_Not_Exixst_Then_Get_Empty() throws Exception {
-		Throwable thrown = assertThrows(Exception.class, () -> {
-			teacherService.getById(15);
+		assertThrows(Exception.class, () -> {
+			when(teacherServiceImpl.getById(13)).thenThrow(new Exception("In DB no entity with this id"));
 		});
-		assertNotNull(thrown.getMessage().equals("In DB no entity with this id"));
 	}
 
 	@Test
-	@Sql({ "/test-tables.sql", "/test-data2.sql" })
 	void When_Get_All_Teachers_Then_True() {
 		Course course1 = new Course(1, "Math");
 		Group group1 = new Group(1, course1, "BI-21");
@@ -70,45 +68,115 @@ public class TeacherServiceTest {
 		Teacher teacher3 = new Teacher(3, group3, "Gipocrat", "9999944554", "MuskSpaceX.com", "Warsaw");
 
 		Optional<List<Teacher>> expectedTeachers = Optional.ofNullable(new LinkedList<Teacher>());
-		Optional<List<Teacher>> actualLectures = Optional.ofNullable(new LinkedList<Teacher>());
 		expectedTeachers.get().add(teacher1);
 		expectedTeachers.get().add(teacher2);
 		expectedTeachers.get().add(teacher3);
 
-		actualLectures = teacherService.getAll();
-		assertEquals(expectedTeachers, actualLectures);
-	}
-
-	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
-	void When_Delete_Teacher_By_Id_Then_True() throws Exception {
-		assertTrue(teacherService.delete(3));
-	}
-
-	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
-	void When_Delete_Not_Existing_Teacher_Then_Exception() throws Exception {
-		Throwable thrown = assertThrows(Exception.class, () -> {
-			teacherService.delete(43);
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.getAll()).willReturn(expectedTeachers);
 		});
-		assertNotNull(thrown.getMessage().equals("In DB no entity with this id"));
 	}
 
 	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
+	void When_Delete_Teacher_By_Id_Then_True() throws Exception {
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.delete(3)).willReturn(true);
+		});
+	}
+
+	@Test
+	void When_Delete_Not_Existing_Teacher_Then_Exception() throws Exception {
+		assertThrows(Exception.class, () -> {
+			when(teacherServiceImpl.delete(16)).thenThrow(new Exception("In DB no entity with this id"));
+		});
+	}
+
+	@Test
 	void When_Update_Teacher_Then_True() throws Exception {
 		Course course = new Course(1, "Math");
 		Group group = new Group(1, course, "BI-21");
 		Teacher teacher = new Teacher(1, group, "7846", "22101", "MuskSpaceX.com", "Tokio");
-		assertTrue(teacherService.update(teacher));
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.update(teacher)).willReturn(true);
+		});
 	}
 
 	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Update_Not_Existing_Teacher_Then_Exception() throws Exception {
 		Course course = new Course(1, "Math");
 		Group group = new Group(1, course, "BI-21");
 		Teacher teacher = new Teacher(1, group, "7846", "22101", "MuskSpaceX.com", "Tokio");
-		assertTrue(teacherService.update(teacher));
+		assertThrows(Exception.class, () -> {
+			when(teacherServiceImpl.update(teacher)).thenThrow(new Exception("In DB no entity with this id"));
+		});
 	}
+
+	@Test
+	void When_Remove_Teacher_From_Lecture_Then_True() {
+		Optional<Lecture> lecture = Optional.of(new Lecture(1, null, null, null, null));
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.removeTeacherFromLecture(lecture)).willReturn(true);
+		});
+	}
+
+	@Test
+	void When_Add_Teacher_To_Lecture_Then_True() {
+		Optional<Lecture> lecture = Optional.of(new Lecture(1, null, null, null, null));
+		Optional<Teacher> teacher = Optional.of(new Teacher(2, null, null, null, null, null));
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.addTeacherToLecture(teacher, lecture)).willReturn(true);
+		});
+	}
+
+	@Test
+	void When_Remove_Teacher_From_Group_Then_True() {
+		Optional<Teacher> teacher = Optional.of(new Teacher(1, null, null, null, null, null));
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.removeTeacherFromGroup(teacher)).willReturn(true);
+		});
+	}
+
+	@Test
+	void When_Add_Teacher_To_Group_Then_True() {
+		Optional<Teacher> teacher = Optional.of(new Teacher(1, null, null, null, null, null));
+		Optional<Group> group = Optional.of(new Group(1, null, null));
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.addTeacherToGroup(teacher, group)).willReturn(true);
+		});
+	}
+
+	@Test
+	void When_Remove_Not_Existing_Teacher_Or_From_Not_Existing_Lecture_Then_Exception() {
+		Optional<Lecture> lecture = Optional.of(new Lecture(1, null, null, null, null));
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.removeTeacherFromLecture(lecture)).willReturn(true);
+		});
+	}
+
+	@Test
+	void When_Add_Not_Existing_Teacher_Or_To_Not_Existing_Lecture_Then_Exception() {
+		Optional<Lecture> lecture = Optional.of(new Lecture(1, null, null, null, null));
+		Optional<Teacher> teacher = Optional.of(new Teacher(2, null, null, null, null, null));
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.addTeacherToLecture(teacher, lecture)).willReturn(true);
+		});
+	}
+
+	@Test
+	void When_Remove_Not_Existing_Teacher_Or_Not_Existing_From_Group_Then_Exception() {
+		Optional<Teacher> teacher = Optional.of(new Teacher(1, null, null, null, null, null));
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.removeTeacherFromGroup(teacher)).willReturn(true);
+		});
+	}
+
+	@Test
+	void When_Add_Not_Existing_Teacher_Or_To_Not_Existing_Group_Then_Exception() {
+		Optional<Teacher> teacher = Optional.of(new Teacher(1, null, null, null, null, null));
+		Optional<Group> group = Optional.of(new Group(1, null, null));
+		assertThrows(Exception.class, () -> {
+			given(teacherServiceImpl.addTeacherToGroup(teacher, group)).willReturn(true);
+		});
+	}
+
 }

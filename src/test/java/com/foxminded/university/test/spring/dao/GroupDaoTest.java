@@ -86,15 +86,15 @@ class GroupDaoTest {
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Remove_Group_From_Course_Then_True() {
-		Group group = new Group(1, null, "TR-21");
+		Optional<Group> group = Optional.of(new Group(1, null, "TR-21"));
 		assertTrue(groupDao.removeGroupFromCourse(group));
 	}
 
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Add_Group_To_Course_Then_True() {
-		Course course = new Course(1, null);
-		Group group = new Group(2, null, null);
+		Optional<Course> course = Optional.of(new Course(1, null));
+		Optional<Group> group = Optional.of(new Group(2, null, null));
 		assertTrue(groupDao.addGroupToCourse(group, course));
 	}
 

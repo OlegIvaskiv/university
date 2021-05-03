@@ -27,8 +27,12 @@ public class TeacherServiceImpl implements TeacherService {
 	}
 
 	@Override
-	public Optional<List<Teacher>> getAll() {
-		return teacherDao.getAll();
+	public Optional<List<Teacher>> getAll() throws Exception {
+		if (!teacherDao.getAll().isEmpty()) {
+			return teacherDao.getAll();
+		} else {
+			throw new Exception("In DB no entity with this id");
+		}
 	}
 
 	@Override
@@ -57,22 +61,46 @@ public class TeacherServiceImpl implements TeacherService {
 	}
 
 	@Override
-	public boolean addTeacherToLecture(Teacher teacher, Lecture lecture) {
-		return teacherDao.addTeacherToLecture(teacher, lecture);
+	public boolean addTeacherToLecture(Optional<Teacher> teacher, Optional<Lecture> lecture) throws Exception {
+		if (lecture.get().getStudent().equals(null)) {
+			if (!teacherDao.getById(teacher.get().getId()).isEmpty()) {
+				return teacherDao.addTeacherToLecture(teacher, lecture);
+			} else {
+				throw new Exception("In DB no entity with this id");
+			}
+		} else {
+			throw new Exception("The lecture has already has the student");
+		}
 	}
 
 	@Override
-	public boolean removeTeacherFromLecture(Lecture lecture) {
-		return teacherDao.removeTeacherFromLecture(lecture);
+	public boolean removeTeacherFromLecture(Optional<Lecture> lecture) throws Exception {
+		if (!lecture.get().getStudent().equals(null)) {
+			return teacherDao.removeTeacherFromLecture(lecture);
+		} else {
+			throw new Exception("The lecture has already has the audience");
+		}
 	}
 
 	@Override
-	public boolean addTeacherToGroup(Teacher teacher, Group group) {
-		return teacherDao.addTeacherToGroup(teacher, group);
+	public boolean addTeacherToGroup(Optional<Teacher> teacher, Optional<Group> group) throws Exception {
+		if (teacher.get().getGroup().equals(null)) {
+			if (!teacherDao.getById(teacher.get().getId()).isEmpty()) {
+				return teacherDao.addTeacherToGroup(teacher, group);
+			} else {
+				throw new Exception("In DB no entity with this id");
+			}
+		} else {
+			throw new Exception("The student has already has the group");
+		}
 	}
 
 	@Override
-	public boolean removeTeacherFromGroup(Teacher teacher) {
-		return teacherDao.removeTeacherFromGroup(teacher);
+	public boolean removeTeacherFromGroup(Optional<Teacher> teacher) throws Exception {
+		if (!teacher.get().getGroup().equals(null)) {
+			return teacherDao.removeTeacherFromGroup(teacher);
+		} else {
+			throw new Exception("The lecture has already has the audience");
+		}
 	}
 }

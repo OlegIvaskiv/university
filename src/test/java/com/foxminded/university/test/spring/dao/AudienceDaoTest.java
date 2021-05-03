@@ -78,14 +78,14 @@ class AudienceDaoTest {
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Add_Audience_To_Lecture_Then_True() {
 		Optional<Audience> audience = Optional.ofNullable(new Audience(2, 0));
-		Optional<Lecture> lecture = Optional.ofNullable(new Lecture(1, null, null, null, null));
-		assertTrue(audienceDao.addAudienceToLecture(audience, lecture));
+		Optional<Lecture> lecture = Optional.ofNullable(new Lecture(3, null, null, null, null));
+		assertEquals(audienceDao.addAudienceToLecture(audience, lecture), true);
 	}
 
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Remove_Audience_From_Lecture_Then_True() {
-		Lecture lecture = new Lecture(1, null, null, null, null);
+		Optional<Lecture> lecture = Optional.ofNullable(new Lecture(1, null, null, null, null));
 		assertTrue(audienceDao.removeAudiecnceFromLecture(lecture));
 	}
 }

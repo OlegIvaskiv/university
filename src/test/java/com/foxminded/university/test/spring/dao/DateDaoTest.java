@@ -77,15 +77,15 @@ class DateDaoTest {
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Add_Date_To_Lecture_Then_True() {
-		Date date = new Date(2, null, null, null);
-		Lecture lecture = new Lecture(1, null, null, null, null);
+		Optional<Date> date = Optional.ofNullable(new Date(2, null, null, null));
+		Optional<Lecture> lecture = Optional.ofNullable(new Lecture(1, null, null, null, null));
 		assertTrue(dateDao.addDateToLecture(date, lecture));
 	}
 
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Remove_Date_From_Lecture_Then_True() {
-		Lecture lecture = new Lecture(1, null, null, null, null);
+		Optional<Lecture> lecture = Optional.ofNullable(new Lecture(1, null, null, null, null));
 		assertTrue(dateDao.removeDateFromLecture(lecture));
 	}
 

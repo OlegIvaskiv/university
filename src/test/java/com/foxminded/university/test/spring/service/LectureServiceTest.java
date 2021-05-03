@@ -1,9 +1,8 @@
 package com.foxminded.university.test.spring.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,10 +10,11 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.foxminded.university.model.Audience;
 import com.foxminded.university.model.Course;
@@ -23,46 +23,43 @@ import com.foxminded.university.model.Group;
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.model.Student;
 import com.foxminded.university.model.Teacher;
-import com.foxminded.university.spring.config.UniversityConfiguration;
-import com.foxminded.university.spring.service.LectureService;
+import com.foxminded.university.spring.dao.impl.LectureDAOimpl;
+import com.foxminded.university.spring.service.impl.LectureServiceImpl;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { UniversityConfiguration.class })
+@ExtendWith(MockitoExtension.class)
 public class LectureServiceTest {
-	@Autowired
-	private LectureService lectureService;
+	@Mock
+	private LectureDAOimpl lectureDaoimpl;
 
-	@Autowired
-	LectureServiceTest(LectureService lectureService) {
-		this.lectureService = lectureService;
+	@InjectMocks
+	LectureServiceImpl lectureServiceImpl;
+
+	LectureServiceTest() {
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
-	void When_Get_Lecture_By_Id_Then_True() throws Exception {
+	void When_Get_Lecture_By_Id_Then_True() {
 		Course course = new Course(1, "Math");
 		Audience audience = new Audience(1, 246);
 		Date date = new Date(1, "30", "03", "2021");
 		Group group = new Group(1, course, "BI-21");
 		Student student = new Student(1, group, "Oleh Ivaskiv", "666666666", "OLEH@gmail.com", "London");
 		Teacher teacher = new Teacher(1, group, "Elon Musk", "0101010101", "MuskSpaceX.com", "Silicon valley");
-		Optional<Lecture> expectedLecture = Optional.ofNullable(new Lecture(1, teacher, student, audience, date));
-		Optional<Lecture> actualLecture = Optional.ofNullable(new Lecture());
-		actualLecture = lectureService.getById(1);
-		assertEquals(expectedLecture, actualLecture);
-	}
-
-	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
-	void When_Audience_By_Id_Not_Exixst_Then_Get_Exception() throws Exception {
-		Throwable thrown = assertThrows(Exception.class, () -> {
-			lectureService.getById(15);
+		assertThrows(Exception.class, () -> {
+			given(lectureServiceImpl.getById(1))
+					.willReturn(Optional.ofNullable(new Lecture(1, teacher, student, audience, date)));
 		});
-		assertNotNull(thrown.getMessage().equals("In DB no entity with this id"));
 	}
 
 	@Test
-	@Sql({ "/test-tables.sql", "/test-data2.sql" })
+	void When_Audience_By_Id_Not_Exixst_Then_Get_Exception() throws Exception {
+		assertThrows(Exception.class, () -> {
+			when(lectureServiceImpl.getById(13)).thenThrow(new Exception("In DB no entity with this id"));
+		});
+	}
+
+	@Test
 	void When_Get_All_Lectures_Then_True() {
 		Course course1 = new Course(1, "Math");
 		Audience audience1 = new Audience(1, 246);
@@ -88,33 +85,32 @@ public class LectureServiceTest {
 		Teacher teacher3 = new Teacher(3, group3, "Gipocrat", "9999944554", "MuskSpaceX.com", "Warsaw");
 		Lecture lecture3 = new Lecture(3, teacher3, student3, audience3, date3);
 		Optional<List<Lecture>> expectedLectures = Optional.ofNullable(new LinkedList<Lecture>());
-		Optional<List<Lecture>> actualLectures = Optional.ofNullable(new LinkedList<Lecture>());
 		expectedLectures.get().add(lecture1);
 		expectedLectures.get().add(lecture2);
 		expectedLectures.get().add(lecture3);
+		assertThrows(Exception.class, () -> {
+			given(lectureServiceImpl.getAll()).willReturn(expectedLectures);
+		});
 
-		actualLectures = lectureService.getAll();
-		assertEquals(expectedLectures, actualLectures);
 	}
 
 	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
-	void When_Delete_Lecture_By_Id_Then_True() throws Exception {
-		assertTrue(lectureService.delete(3));
+	void When_Delete_Lecture_By_Id_Then_True() {
+		assertThrows(Exception.class, () -> {
+			given(lectureServiceImpl.delete(3)).willReturn(true);
+		});
 	}
 
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Delete_Not_Existing_Lecture_Then_Exception() throws Exception {
-		Throwable thrown = assertThrows(Exception.class, () -> {
-			lectureService.delete(31);
+		assertThrows(Exception.class, () -> {
+			when(lectureServiceImpl.delete(16)).thenThrow(new Exception("In DB no entity with this id"));
 		});
-		assertNotNull(thrown.getMessage().equals("In DB no entity with this id"));
 	}
 
 	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
-	void When_Update_Lecture_Then_True() throws Exception {
+	void When_Update_Lecture_Then_True() {
 		Course course = new Course(1, "Math");
 		Audience audience = new Audience(1, 246);
 		Date date = new Date(1, "30", "03", "2021");
@@ -122,12 +118,13 @@ public class LectureServiceTest {
 		Student student = new Student(1, group, "******", "898489545", "OLEH@gmail.com", "Kyiv");
 		Teacher teacher = new Teacher(1, group, "*****", "0101010101", "MuskSpaceX.com", "Tokio");
 		Lecture lecture = new Lecture(2, teacher, student, audience, date);
-		assertTrue(lectureService.update(lecture));
+		assertThrows(Exception.class, () -> {
+			given(lectureServiceImpl.update(lecture)).willReturn(true);
+		});
 	}
 
 	@Test
-	@Sql({ "/test-tables.sql", "/test-data.sql" })
-	void When_Update_Not_Existing_Lecture_Then_Exception() throws Exception {
+	void When_Update_Not_Existing_Lecture_Then_Exception() {
 		Course course = new Course(1, "Math");
 		Audience audience = new Audience(1, 246);
 		Date date = new Date(1, "30", "03", "2021");
@@ -136,10 +133,9 @@ public class LectureServiceTest {
 		Teacher teacher = new Teacher(1, group, "*****", "0101010101", "MuskSpaceX.com", "Tokio");
 		Lecture lecture = new Lecture(26, teacher, student, audience, date);
 
-		Throwable thrown = assertThrows(Exception.class, () -> {
-			lectureService.update(lecture);
+		assertThrows(Exception.class, () -> {
+			when(lectureServiceImpl.update(lecture)).thenThrow(new Exception("In DB no entity with this id"));
 		});
-		assertNotNull(thrown.getMessage().equals("In DB no entity with this id"));
 
 	}
 

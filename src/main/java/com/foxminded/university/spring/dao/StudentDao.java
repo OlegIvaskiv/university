@@ -21,11 +21,11 @@ public interface StudentDao extends GenericDao<Student> {
 
 	boolean create(Student t);
 
-	boolean addStudentToLecture(Student student, Lecture lecture);
+	boolean addStudentToLecture(Optional<Student> student, Optional<Lecture> lecture);
 
-	boolean removeStudentFromLecture(Lecture lecture);
+	boolean removeStudentFromLecture(Optional<Lecture> lecture);
 
-	boolean addStudentToGroup(Student student, Group group);
+	boolean removeStudentFromGroup(Optional<Student> student);
 
-	boolean removeStudentFromGroup(Student student);
+	boolean addStudentToGroup(Optional<Student> student, Optional<Group> group);
 }

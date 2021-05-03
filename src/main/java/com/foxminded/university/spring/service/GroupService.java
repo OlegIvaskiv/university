@@ -12,7 +12,7 @@ import com.foxminded.university.model.Group;
 public interface GroupService {
 	Optional<Group> getById(int id) throws Exception;
 
-	Optional<List<Group>> getAll();
+	Optional<List<Group>> getAll() throws Exception;
 
 	boolean delete(int id) throws Exception;
 
@@ -20,7 +20,7 @@ public interface GroupService {
 
 	boolean create(Group t);
 
-	boolean addGroupToCourse(Group group, Course course);
+	boolean removeGroupFromCourse(Optional<Group> group) throws Exception;
 
-	boolean removeGroupFromCourse(Group group);
+	boolean addGroupToCourse(Optional<Group> group, Optional<Course> course) throws Exception;
 }

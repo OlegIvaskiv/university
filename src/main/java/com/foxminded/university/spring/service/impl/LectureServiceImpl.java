@@ -25,8 +25,12 @@ public class LectureServiceImpl implements LectureService {
 	}
 
 	@Override
-	public Optional<List<Lecture>> getAll() {
-		return lectureDao.getAll();
+	public Optional<List<Lecture>> getAll() throws Exception {
+		if (!lectureDao.getAll().isEmpty()) {
+			return lectureDao.getAll();
+		} else {
+			throw new Exception("In DB no entity with this id");
+		}
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import com.foxminded.university.model.Teacher;
 public interface TeacherService {
 	Optional<Teacher> getById(int id) throws Exception;
 
-	Optional<List<Teacher>> getAll();
+	Optional<List<Teacher>> getAll() throws Exception;
 
 	boolean delete(int id) throws Exception;
 
@@ -21,11 +21,11 @@ public interface TeacherService {
 
 	boolean create(Teacher t);
 
-	boolean addTeacherToLecture(Teacher teacher, Lecture lecture);
+	boolean removeTeacherFromLecture(Optional<Lecture> lecture) throws Exception;
 
-	boolean removeTeacherFromLecture(Lecture lecture);
+	boolean addTeacherToGroup(Optional<Teacher> teacher, Optional<Group> group) throws Exception;
 
-	boolean addTeacherToGroup(Teacher teacher, Group group);
+	boolean removeTeacherFromGroup(Optional<Teacher> teacher) throws Exception;
 
-	boolean removeTeacherFromGroup(Teacher teacher);
+	boolean addTeacherToLecture(Optional<Teacher> teacher, Optional<Lecture> lecture) throws Exception;
 }

@@ -3,29 +3,19 @@ package com.foxminded.university.spring.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.foxminded.university.model.Audience;
 import com.foxminded.university.model.Lecture;
-import com.foxminded.university.spring.dao.impl.AudienceDAOimpl;
-import com.foxminded.university.spring.dao.impl.LectureDAOimpl;
+import com.foxminded.university.spring.dao.AudienceDao;
 import com.foxminded.university.spring.service.AudienceService;
 
 @Component
 public class AudienceServiceImpl implements AudienceService {
 
-	private AudienceDAOimpl audienceDao;
-
-	private LectureDAOimpl lectureDao;
-
-	private static final Logger LOGGER = LogManager.getLogger(AudienceServiceImpl.class);
-
-	public AudienceServiceImpl(AudienceDAOimpl audienceDao, LectureDAOimpl lectureDao) {
-		this.audienceDao = audienceDao;
-		this.lectureDao = lectureDao;
-	}
+	@Autowired
+	private AudienceDao audienceDao;
 
 	@Override
 	public Optional<Audience> getById(int id) throws Exception {
@@ -61,7 +51,6 @@ public class AudienceServiceImpl implements AudienceService {
 		} else {
 			throw new Exception("In DB no entity with this id");
 		}
-
 	}
 
 	@Override
@@ -71,22 +60,23 @@ public class AudienceServiceImpl implements AudienceService {
 
 	@Override
 	public boolean addAudienceToLecture(Optional<Audience> audience, Optional<Lecture> lecture) throws Exception {
-		if (lecture.get().getAudience() == null) {
-			if (lectureDao.getById(lecture.get().getId()).equals(lecture)) {
+		if (lecture.get().getAudience().equals(null)) {
+			if (!audienceDao.getById(audience.get().getId()).isEmpty()) {
 				return audienceDao.addAudienceToLecture(audience, lecture);
 			} else {
-				LOGGER.error("The object of lecture differs from lecture in DB");
-				return false;
+				throw new Exception("In DB no entity with this id");
 			}
 		} else {
-			LOGGER.error("The lecture have already related with audience, update lecture");
-			return false;
+			throw new Exception("The lecture has already has the audience");
 		}
 	}
 
 	@Override
-	public boolean removeAudiecnceFromLecture(Lecture lecture) {
-		return audienceDao.removeAudiecnceFromLecture(lecture);
+	public boolean removeAudiecnceFromLecture(Optional<Lecture> lecture) throws Exception {
+		if (!lecture.get().getAudience().equals(null)) {
+			return audienceDao.removeAudiecnceFromLecture(lecture);
+		} else {
+			throw new Exception("The lecture has already has the audience");
+		}
 	}
-
 }

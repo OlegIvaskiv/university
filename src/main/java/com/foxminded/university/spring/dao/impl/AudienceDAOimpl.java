@@ -80,17 +80,14 @@ public class AudienceDAOimpl implements AudienceDao {
 
 	@Override
 	public boolean addAudienceToLecture(Optional<Audience> audience, Optional<Lecture> lecture) {
-		if (lecture.get().getAudience() == null) {
-			LOGGER.debug("adding audience to lecture");
-			return jdbcTemplate.update(SQL_ADD_AUDIENCE, audience.get().getId(), lecture.get().getId()) > 0;
-		}
-		return false;
+		LOGGER.debug("adding audience to lecture");
+		return (jdbcTemplate.update(SQL_ADD_AUDIENCE, audience.get().getId(), lecture.get().getId()) > 0);
 	}
 
 	@Override
-	public boolean removeAudiecnceFromLecture(Lecture lecture) {
+	public boolean removeAudiecnceFromLecture(Optional<Lecture> lecture) {
 		LOGGER.debug("removing audience from lecture");
-		return jdbcTemplate.update(SQL_REMOVE_AUDIENCE, lecture.getId()) > 0;
+		return jdbcTemplate.update(SQL_REMOVE_AUDIENCE, lecture.get().getId()) > 0;
 	}
 
 }

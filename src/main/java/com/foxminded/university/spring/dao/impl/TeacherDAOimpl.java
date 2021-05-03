@@ -86,32 +86,26 @@ public class TeacherDAOimpl implements TeacherDao {
 	}
 
 	@Override
-	public boolean addTeacherToLecture(Teacher teacher, Lecture lecture) {
-		if (lecture.getTeacher() == null) {
-			LOGGER.debug("adding teacher to lecture");
-			return jdbcTemplate.update(SQL_ADD_TEACHER_TO_LECTURE, teacher.getId(), lecture.getId()) > 0;
-		}
-		return false;
+	public boolean addTeacherToLecture(Optional<Teacher> teacher, Optional<Lecture> lecture) {
+		LOGGER.debug("adding teacher to lecture");
+		return jdbcTemplate.update(SQL_ADD_TEACHER_TO_LECTURE, teacher.get().getId(), lecture.get().getId()) > 0;
 	}
 
 	@Override
-	public boolean removeTeacherFromLecture(Lecture lecture) {
+	public boolean removeTeacherFromLecture(Optional<Lecture> lecture) {
 		LOGGER.debug("removing teacher from lecture");
-		return jdbcTemplate.update(SQL_REMOVE_TEACHER_FROM_LECTURE, lecture.getId()) > 0;
+		return jdbcTemplate.update(SQL_REMOVE_TEACHER_FROM_LECTURE, lecture.get().getId()) > 0;
 	}
 
 	@Override
-	public boolean addTeacherToGroup(Teacher teacher, Group group) {
-		if (teacher.getGroup() == null) {
-			LOGGER.debug("adding teacher to group");
-			return jdbcTemplate.update(SQL_ADD_TEACHER_TO_GROUP, group.getId(), teacher.getId()) > 0;
-		}
-		return false;
+	public boolean addTeacherToGroup(Optional<Teacher> teacher, Optional<Group> group) {
+		LOGGER.debug("adding teacher to group");
+		return jdbcTemplate.update(SQL_ADD_TEACHER_TO_GROUP, group.get().getId(), teacher.get().getId()) > 0;
 	}
 
 	@Override
-	public boolean removeTeacherFromGroup(Teacher teacher) {
+	public boolean removeTeacherFromGroup(Optional<Teacher> teacher) {
 		LOGGER.debug("removing teacher from group");
-		return jdbcTemplate.update(SQL_REMOVE_TEACHER_FROM_GROUP, teacher.getId()) > 0;
+		return jdbcTemplate.update(SQL_REMOVE_TEACHER_FROM_GROUP, teacher.get().getId()) > 0;
 	}
 }

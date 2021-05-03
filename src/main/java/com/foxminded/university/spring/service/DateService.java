@@ -13,7 +13,7 @@ public interface DateService {
 
 	Optional<Date> getById(int id) throws Exception;
 
-	Optional<List<Date>> getAll();
+	Optional<List<Date>> getAll() throws Exception;
 
 	boolean delete(int id) throws Exception;
 
@@ -21,7 +21,7 @@ public interface DateService {
 
 	boolean create(Date t);
 
-	boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture);
+	boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture) throws Exception;
 
-	boolean removeDateFromLecture(Optional<Lecture> lecture);
+	boolean removeDateFromLecture(Optional<Lecture> lecture) throws Exception;
 }

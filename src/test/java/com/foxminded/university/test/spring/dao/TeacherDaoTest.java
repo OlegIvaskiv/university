@@ -95,30 +95,32 @@ class TeacherDaoTest {
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Remove_Teacher_From_Lecture_Then_True() {
-		Lecture lecture = new Lecture(1, null, null, null, null);
+		Optional<Lecture> lecture = Optional.of(new Lecture(1, null, null, null, null));
 		assertTrue(teacherDao.removeTeacherFromLecture(lecture));
 	}
 
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Add_Teacher_To_Lecture_Then_True() {
-		Lecture lecture = new Lecture(1, null, null, null, null);
-		Teacher teacher = new Teacher(2, null, null, null, null, null);
+		Optional<Lecture> lecture = Optional.of(new Lecture(1, null, null, null, null));
+		Optional<Teacher> teacher = Optional.of(new Teacher(2, null, null, null, null, null));
+
 		assertTrue(teacherDao.addTeacherToLecture(teacher, lecture));
 	}
 
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Remove_Teacher_From_Group_Then_True() {
-		Teacher teacher = new Teacher(1, null, null, null, null, null);
+		Optional<Teacher> teacher = Optional.of(new Teacher(1, null, null, null, null, null));
 		assertTrue(teacherDao.removeTeacherFromGroup(teacher));
 	}
 
 	@Test
 	@Sql({ "/test-tables.sql", "/test-data.sql" })
 	void When_Add_Teacher_To_Group_Then_True() {
-		Teacher teacher = new Teacher(1, null, null, null, null, null);
-		Group group = new Group(1, null, null);
+		Optional<Teacher> teacher = Optional.of(new Teacher(1, null, null, null, null, null));
+		Optional<Group> group = Optional.of(new Group(1, null, null));
+
 		assertTrue(teacherDao.addTeacherToGroup(teacher, group));
 	}
 

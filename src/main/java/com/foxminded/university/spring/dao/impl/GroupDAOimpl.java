@@ -80,17 +80,14 @@ public class GroupDAOimpl implements GroupDao {
 	}
 
 	@Override
-	public boolean addGroupToCourse(Group group, Course course) {
-		if (group.getCourse() == null) {
-			LOGGER.debug("adding group to course");
-			return jdbcTemplate.update(SQL_ADD_GROUP_TO_COURSE, course.getId(), group.getId()) > 0;
-		}
-		return false;
+	public boolean addGroupToCourse(Optional<Group> group, Optional<Course> course) {
+		LOGGER.debug("adding group to course");
+		return jdbcTemplate.update(SQL_ADD_GROUP_TO_COURSE, course.get().getId(), group.get().getId()) > 0;
 	}
 
 	@Override
-	public boolean removeGroupFromCourse(Group group) {
+	public boolean removeGroupFromCourse(Optional<Group> group) {
 		LOGGER.debug("removing group from course");
-		return jdbcTemplate.update(SQL_REMOVE_FEMOVE_FROME_COURSE, group.getId()) > 0;
+		return jdbcTemplate.update(SQL_REMOVE_FEMOVE_FROME_COURSE, group.get().getId()) > 0;
 	}
 }

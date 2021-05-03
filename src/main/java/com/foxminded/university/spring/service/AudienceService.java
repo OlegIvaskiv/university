@@ -23,6 +23,6 @@ public interface AudienceService {
 
 	boolean addAudienceToLecture(Optional<Audience> audience, Optional<Lecture> lecture) throws Exception;
 
-	boolean removeAudiecnceFromLecture(Lecture lecture);
+	boolean removeAudiecnceFromLecture(Optional<Lecture> lecture) throws Exception;
 
 }

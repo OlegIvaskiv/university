@@ -26,8 +26,12 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Optional<List<Group>> getAll() {
-		return groupDao.getAll();
+	public Optional<List<Group>> getAll() throws Exception {
+		if (!groupDao.getAll().isEmpty()) {
+			return groupDao.getAll();
+		} else {
+			throw new Exception("In DB no entity with this id");
+		}
 	}
 
 	@Override
@@ -55,12 +59,25 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public boolean addGroupToCourse(Group group, Course course) {
-		return groupDao.addGroupToCourse(group, course);
+	public boolean addGroupToCourse(Optional<Group> group, Optional<Course> course) throws Exception {
+		if (group.get().getCourse().equals(null)) {
+			if (!groupDao.getById(group.get().getId()).isEmpty()) {
+				return groupDao.addGroupToCourse(group, course);
+			} else {
+				throw new Exception("In DB no entity with this id");
+			}
+		} else {
+			throw new Exception("The course has already has the group");
+		}
+
 	}
 
 	@Override
-	public boolean removeGroupFromCourse(Group group) {
-		return groupDao.removeGroupFromCourse(group);
+	public boolean removeGroupFromCourse(Optional<Group> group) throws Exception {
+		if (!group.get().getCourse().equals(null)) {
+			return groupDao.removeGroupFromCourse(group);
+		} else {
+			throw new Exception("The course has not the group");
+		}
 	}
 }

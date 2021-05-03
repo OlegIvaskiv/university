@@ -78,18 +78,15 @@ public class DateDAOimpl implements DateDao {
 	}
 
 	@Override
-	public boolean addDateToLecture(Date date, Lecture lecture) {
-		if (lecture.getDate() == null) {
-			LOGGER.debug("adding date to lecture");
-			return jdbcTemplate.update(SQL_ADD_DATE, date.getId(), lecture.getId()) > 0;
-		}
-		return false;
+	public boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture) {
+		LOGGER.debug("adding date to lecture");
+		return jdbcTemplate.update(SQL_ADD_DATE, date.get().getId(), lecture.get().getId()) > 0;
 	}
 
 	@Override
-	public boolean removeDateFromLecture(Lecture lecture) {
+	public boolean removeDateFromLecture(Optional<Lecture> lecture) {
 		LOGGER.debug("removing date from lecture");
-		return jdbcTemplate.update(SQL_REMOVE_DATE, lecture.getId()) > 0;
+		return jdbcTemplate.update(SQL_REMOVE_DATE, lecture.get().getId()) > 0;
 	}
 
 }

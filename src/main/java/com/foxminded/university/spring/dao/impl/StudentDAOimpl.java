@@ -84,32 +84,28 @@ public class StudentDAOimpl implements StudentDao {
 	}
 
 	@Override
-	public boolean addStudentToLecture(Student student, Lecture lecture) {
-		if (lecture.getStudent() == null) {
-			LOGGER.debug("adding student to lecture");
-			return jdbcTemplate.update(SQL_ADD_STUDENT_TO_LECTURE, student.getId(), lecture.getId()) > 0;
-		}
-		return false;
+	public boolean addStudentToLecture(Optional<Student> student, Optional<Lecture> lecture) {
+		LOGGER.debug("adding student to lecture");
+		return jdbcTemplate.update(SQL_ADD_STUDENT_TO_LECTURE, student.get().getId(), lecture.get().getId()) > 0;
+
 	}
 
 	@Override
-	public boolean removeStudentFromLecture(Lecture lecture) {
+	public boolean removeStudentFromLecture(Optional<Lecture> lecture) {
 		LOGGER.debug("removing student from lecture");
-		return jdbcTemplate.update(SQL_REMOVE_STUDENT_FROM_LECTURE, lecture.getId()) > 0;
+		return jdbcTemplate.update(SQL_REMOVE_STUDENT_FROM_LECTURE, lecture.get().getId()) > 0;
 	}
 
 	@Override
-	public boolean addStudentToGroup(Student student, Group group) {
-		if (student.getGroup() == null) {
-			LOGGER.debug("adding student to group");
-			return jdbcTemplate.update(SQL_ADD_STUDENT_TO_GROUP, group.getId(), student.getId()) > 0;
-		}
-		return false;
+	public boolean addStudentToGroup(Optional<Student> student, Optional<Group> group) {
+		LOGGER.debug("adding student to group");
+		return jdbcTemplate.update(SQL_ADD_STUDENT_TO_GROUP, group.get().getId(), student.get().getId()) > 0;
+
 	}
 
 	@Override
-	public boolean removeStudentFromGroup(Student student) {
+	public boolean removeStudentFromGroup(Optional<Student> student) {
 		LOGGER.debug("removing student from group");
-		return jdbcTemplate.update(SQL_REMOVE_STUDENT_FROM_GROUP, student.getId()) > 0;
+		return jdbcTemplate.update(SQL_REMOVE_STUDENT_FROM_GROUP, student.get().getId()) > 0;
 	}
 }
