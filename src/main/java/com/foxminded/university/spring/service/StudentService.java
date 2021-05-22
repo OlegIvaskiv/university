@@ -8,18 +8,19 @@ import org.springframework.stereotype.Component;
 import com.foxminded.university.model.Group;
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.model.Student;
+import com.foxminded.university.spring.service.exception.ServiceException;
 
 @Component
 public interface StudentService {
-	Optional<Student> getById(int id) throws Exception;
+	Student getById(int id) throws Exception;
 
-	Optional<List<Student>> getAll() throws Exception;
+	List<Student> getAll() throws Exception;
 
 	boolean delete(int id) throws Exception;
 
 	boolean update(Student t) throws Exception;
 
-	boolean create(Student t);
+	boolean create(Student t) throws ServiceException;
 
 	boolean addStudentToGroup(Optional<Student> student, Optional<Group> group) throws Exception;
 

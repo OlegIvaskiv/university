@@ -7,18 +7,19 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.university.model.Course;
 import com.foxminded.university.model.Group;
+import com.foxminded.university.spring.service.exception.ServiceException;
 
 @Component
 public interface GroupService {
-	Optional<Group> getById(int id) throws Exception;
+	Group getById(int id) throws Exception;
 
-	Optional<List<Group>> getAll() throws Exception;
+	List<Group> getAll() throws Exception;
 
 	boolean delete(int id) throws Exception;
 
 	boolean update(Group t) throws Exception;
 
-	boolean create(Group t);
+	boolean create(Group t) throws ServiceException;
 
 	boolean removeGroupFromCourse(Optional<Group> group) throws Exception;
 

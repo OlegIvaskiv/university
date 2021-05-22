@@ -3,6 +3,7 @@ package com.foxminded.university.model;
 import java.util.Objects;
 
 import org.springframework.stereotype.Component;
+
 @Component
 public class Lecture {
 	private int id;
@@ -11,11 +12,15 @@ public class Lecture {
 	private Date date;
 	private Audience audience;
 
-	public Lecture(int id,
-			Teacher teacher,
-			Student student,
-			Audience audience,
-			Date date) {
+	public Lecture(Teacher teacher, Student student, Audience audience, Date date) {
+		super();
+		this.student = student;
+		this.teacher = teacher;
+		this.date = date;
+		this.audience = audience;
+	}
+
+	public Lecture(int id, Teacher teacher, Student student, Audience audience, Date date) {
 		super();
 		this.id = id;
 		this.student = student;

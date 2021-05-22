@@ -3,17 +3,27 @@ package com.foxminded.university.model;
 import java.util.Objects;
 
 import org.springframework.stereotype.Component;
+
 @Component
 public class Date {
-	private Integer id;
+	private int id;
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	private String day;
 	private String mounth;
 	private String year;
 
-	public Date(Integer id,
-			String day,
-			String mounth,
-			String year) {
+	public Date(String day, String mounth, String year) {
+		super();
+		this.day = day;
+		this.mounth = mounth;
+		this.year = year;
+	}
+
+	public Date(int id, String day, String mounth, String year) {
 		super();
 		this.id = id;
 		this.day = day;
@@ -24,12 +34,8 @@ public class Date {
 	public Date() {
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getDay() {

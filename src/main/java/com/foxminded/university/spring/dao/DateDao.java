@@ -7,20 +7,21 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.university.model.Date;
 import com.foxminded.university.model.Lecture;
+import com.foxminded.university.spring.dao.exception.DaoException;
 
 @Component
 public interface DateDao extends GenericDao<Date> {
-	Optional<Date> getById(int id);
+	Date getById(int id) throws DaoException;
 
-	Optional<List<Date>> getAll();
+	List<Date> getAll() throws DaoException;
 
-	boolean delete(int id);
+	boolean delete(int id) throws DaoException;
 
-	boolean update(Date t);
+	boolean update(Date t) throws DaoException;
 
-	boolean create(Date t);
+	boolean create(Date t) throws DaoException;
 
-	boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture);
+	boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture) throws DaoException;
 
-	boolean removeDateFromLecture(Optional<Lecture> lecture);
+	boolean removeDateFromLecture(Optional<Lecture> lecture) throws DaoException;
 }

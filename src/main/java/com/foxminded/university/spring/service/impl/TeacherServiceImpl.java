@@ -6,101 +6,84 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.foxminded.university.model.Group;
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.model.Teacher;
 import com.foxminded.university.spring.dao.TeacherDao;
+import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.TeacherService;
+import com.foxminded.university.spring.service.exception.ServiceException;
 
 @Component
 public class TeacherServiceImpl implements TeacherService {
-	@Autowired
-	private TeacherDao teacherDao;
+    @Autowired
+    private TeacherDao teacherDao;
 
-	@Override
-	public Optional<Teacher> getById(int id) throws Exception {
-		if (!teacherDao.getById(id).isEmpty()) {
-			return teacherDao.getById(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
-		}
-	}
+    @Override
+    public Teacher getById(int id) throws ServiceException {
+        try {
+            return teacherDao.getById(id);
+        } catch (DaoException e) {
+            e.getStackTrace();
+            throw new ServiceException("can not get teacher by this id");
+        }
+    }
 
-	@Override
-	public Optional<List<Teacher>> getAll() throws Exception {
-		if (!teacherDao.getAll().isEmpty()) {
-			return teacherDao.getAll();
-		} else {
-			throw new Exception("In DB no entity with this id");
-		}
-	}
+    @Override
+    public List<Teacher> getAll() throws ServiceException {
+        try {
+            return teacherDao.getAll();
+        } catch (DaoException e) {
+            e.getStackTrace();
+            throw new ServiceException("can not get all teachers");
+        }
+    }
 
-	@Override
-	public boolean delete(int id) throws Exception {
-		if (!teacherDao.getById(id).isEmpty()) {
-			return teacherDao.delete(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
-		}
+    @Override
+    public boolean delete(int id) throws ServiceException {
+        try {
+            return teacherDao.delete(id);
+        } catch (DaoException e) {
+            e.getStackTrace();
+            throw new ServiceException("can not delete teacher by this id");
+        }
+    }
 
-	}
+    @Override
+    public boolean update(Teacher teacher) throws ServiceException {
+        try {
+            return teacherDao.update(teacher);
+        } catch (DaoException e) {
+            e.getStackTrace();
+            throw new ServiceException("can not update this teacher");
+        }
+    }
 
-	@Override
-	public boolean update(Teacher teacher) throws Exception {
-		if (!teacherDao.getById(teacher.getId()).isEmpty()) {
-			return teacherDao.update(teacher);
-		} else {
-			throw new Exception("In DB no entity with this id");
-		}
+    @Override
+    public boolean create(Teacher teacher) throws ServiceException {
+        try {
+            return teacherDao.create(teacher);
+        } catch (DaoException e) {
+            throw new ServiceException("can not create teacher");
+        }
 
-	}
+    }
 
-	@Override
-	public boolean create(Teacher teacher) {
-		return teacherDao.create(teacher);
-	}
+    @Override
+    public boolean addTeacherToLecture(Optional<Teacher> teacher, Optional<Lecture> lecture) throws ServiceException {
+        try {
+            return teacherDao.addTeacherToLecture(teacher, lecture);
+        } catch (DaoException e) {
+            throw new ServiceException("can not add teacher to lecture");
+        }
+    }
 
-	@Override
-	public boolean addTeacherToLecture(Optional<Teacher> teacher, Optional<Lecture> lecture) throws Exception {
-		if (lecture.get().getStudent().equals(null)) {
-			if (!teacherDao.getById(teacher.get().getId()).isEmpty()) {
-				return teacherDao.addTeacherToLecture(teacher, lecture);
-			} else {
-				throw new Exception("In DB no entity with this id");
-			}
-		} else {
-			throw new Exception("The lecture has already has the student");
-		}
-	}
+    @Override
+    public boolean removeTeacherFromLecture(Optional<Lecture> lecture) throws ServiceException {
+        try {
+            return teacherDao.removeTeacherFromLecture(lecture);
+        } catch (DaoException e) {
+            throw new ServiceException("can not remove teacher from lecture");
+        }
+    }
 
-	@Override
-	public boolean removeTeacherFromLecture(Optional<Lecture> lecture) throws Exception {
-		if (!lecture.get().getStudent().equals(null)) {
-			return teacherDao.removeTeacherFromLecture(lecture);
-		} else {
-			throw new Exception("The lecture has already has the audience");
-		}
-	}
-
-	@Override
-	public boolean addTeacherToGroup(Optional<Teacher> teacher, Optional<Group> group) throws Exception {
-		if (teacher.get().getGroup().equals(null)) {
-			if (!teacherDao.getById(teacher.get().getId()).isEmpty()) {
-				return teacherDao.addTeacherToGroup(teacher, group);
-			} else {
-				throw new Exception("In DB no entity with this id");
-			}
-		} else {
-			throw new Exception("The student has already has the group");
-		}
-	}
-
-	@Override
-	public boolean removeTeacherFromGroup(Optional<Teacher> teacher) throws Exception {
-		if (!teacher.get().getGroup().equals(null)) {
-			return teacherDao.removeTeacherFromGroup(teacher);
-		} else {
-			throw new Exception("The lecture has already has the audience");
-		}
-	}
 }

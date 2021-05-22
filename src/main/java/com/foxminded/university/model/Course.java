@@ -3,10 +3,21 @@ package com.foxminded.university.model;
 import java.util.Objects;
 
 import org.springframework.stereotype.Component;
+
 @Component
 public class Course {
 	private int id;
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	private String name;
+
+	public Course(String name) {
+		super();
+		this.name = name;
+	}
 
 	public Course(int id, String name) {
 		super();
@@ -19,10 +30,6 @@ public class Course {
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getName() {

@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 import com.foxminded.university.model.Course;
 import com.foxminded.university.model.Group;
 import com.foxminded.university.spring.dao.GroupDao;
+import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.GroupService;
+import com.foxminded.university.spring.service.exception.ServiceException;
 
 @Component
 public class GroupServiceImpl implements GroupService {
@@ -17,67 +19,67 @@ public class GroupServiceImpl implements GroupService {
 	private GroupDao groupDao;
 
 	@Override
-	public Optional<Group> getById(int id) throws Exception {
-		if (!groupDao.getById(id).isEmpty()) {
+	public Group getById(int id) throws ServiceException {
+		try {
 			return groupDao.getById(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not get group by this id");
 		}
 	}
 
 	@Override
-	public Optional<List<Group>> getAll() throws Exception {
-		if (!groupDao.getAll().isEmpty()) {
+	public List<Group> getAll() throws ServiceException {
+		try {
 			return groupDao.getAll();
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not get all groups");
 		}
 	}
 
 	@Override
-	public boolean delete(int id) throws Exception {
-		if (!groupDao.getById(id).isEmpty()) {
+	public boolean delete(int id) throws ServiceException {
+		try {
 			return groupDao.delete(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not delete group by this id");
 		}
 	}
 
 	@Override
-	public boolean update(Group group) throws Exception {
-		if (!groupDao.getById(group.getId()).isEmpty()) {
+	public boolean update(Group group) throws ServiceException {
+		try {
 			return groupDao.update(group);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not update this group");
 		}
 
 	}
 
 	@Override
-	public boolean create(Group group) {
-		return groupDao.create(group);
-	}
-
-	@Override
-	public boolean addGroupToCourse(Optional<Group> group, Optional<Course> course) throws Exception {
-		if (group.get().getCourse().equals(null)) {
-			if (!groupDao.getById(group.get().getId()).isEmpty()) {
-				return groupDao.addGroupToCourse(group, course);
-			} else {
-				throw new Exception("In DB no entity with this id");
-			}
-		} else {
-			throw new Exception("The course has already has the group");
+	public boolean create(Group group) throws ServiceException {
+		try {
+			return groupDao.create(group);
+		} catch (DaoException e) {
+			throw new ServiceException("can not create group");
 		}
 
 	}
 
 	@Override
-	public boolean removeGroupFromCourse(Optional<Group> group) throws Exception {
-		if (!group.get().getCourse().equals(null)) {
+	public boolean addGroupToCourse(Optional<Group> group, Optional<Course> course) throws ServiceException {
+		try {
+			return groupDao.addGroupToCourse(group, course);
+		} catch (DaoException e) {
+			throw new ServiceException("can not add group to course");
+		}
+	}
+
+	@Override
+	public boolean removeGroupFromCourse(Optional<Group> group) throws ServiceException {
+		try {
 			return groupDao.removeGroupFromCourse(group);
-		} else {
-			throw new Exception("The course has not the group");
+		} catch (DaoException e) {
+			throw new ServiceException("can not remove group from course");
 		}
 	}
 }

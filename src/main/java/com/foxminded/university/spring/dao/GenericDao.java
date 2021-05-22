@@ -1,19 +1,20 @@
 package com.foxminded.university.spring.dao;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.foxminded.university.spring.dao.exception.DaoException;
+
 @Component
 public interface GenericDao<T> {
-	Optional<T> getById(int id);
+	T getById(int id) throws DaoException;
 
-	Optional<List<T>> getAll();
+	List<T> getAll() throws DaoException;
 
-	boolean delete(int id);
+	boolean delete(int id) throws DaoException;
 
-	boolean update(T t);
+	boolean update(T t) throws DaoException;
 
-	boolean create(T t);
+	boolean create(T t) throws DaoException;
 }

@@ -8,24 +8,25 @@ import org.springframework.stereotype.Component;
 import com.foxminded.university.model.Group;
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.model.Student;
+import com.foxminded.university.spring.dao.exception.DaoException;
 
 @Component
 public interface StudentDao extends GenericDao<Student> {
-	Optional<Student> getById(int id);
+	Student getById(int id) throws DaoException;
 
-	Optional<List<Student>> getAll();
+	List<Student> getAll() throws DaoException;
 
-	boolean delete(int id);
+	boolean delete(int id) throws DaoException;
 
-	boolean update(Student t);
+	boolean update(Student t) throws DaoException;
 
-	boolean create(Student t);
+	boolean create(Student t) throws DaoException;
 
-	boolean addStudentToLecture(Optional<Student> student, Optional<Lecture> lecture);
+	boolean addStudentToLecture(Optional<Student> student, Optional<Lecture> lecture) throws DaoException;
 
-	boolean removeStudentFromLecture(Optional<Lecture> lecture);
+	boolean removeStudentFromLecture(Optional<Lecture> lecture) throws DaoException;
 
-	boolean removeStudentFromGroup(Optional<Student> student);
+	boolean removeStudentFromGroup(Optional<Student> student) throws DaoException;
 
-	boolean addStudentToGroup(Optional<Student> student, Optional<Group> group);
+	boolean addStudentToGroup(Optional<Student> student, Optional<Group> group) throws DaoException;
 }

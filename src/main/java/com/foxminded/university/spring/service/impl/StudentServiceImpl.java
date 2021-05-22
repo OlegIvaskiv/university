@@ -10,7 +10,9 @@ import com.foxminded.university.model.Group;
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.model.Student;
 import com.foxminded.university.spring.dao.StudentDao;
+import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.StudentService;
+import com.foxminded.university.spring.service.exception.ServiceException;
 
 @Component
 public class StudentServiceImpl implements StudentService {
@@ -18,87 +20,85 @@ public class StudentServiceImpl implements StudentService {
 	private StudentDao studentDao;
 
 	@Override
-	public Optional<Student> getById(int id) throws Exception {
-		if (!studentDao.getById(id).isEmpty()) {
+	public Student getById(int id) throws ServiceException {
+		try {
 			return studentDao.getById(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			e.getStackTrace();
+			throw new ServiceException("can not get student by this id");
 		}
 	}
 
 	@Override
-	public Optional<List<Student>> getAll() throws Exception {
-		if (!studentDao.getAll().isEmpty()) {
+	public List<Student> getAll() throws ServiceException {
+		try {
 			return studentDao.getAll();
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not get all students");
 		}
 	}
 
 	@Override
-	public boolean delete(int id) throws Exception {
-		if (!studentDao.getById(id).isEmpty()) {
+	public boolean delete(int id) throws ServiceException {
+		try {
 			return studentDao.delete(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not delete student by this id");
 		}
 	}
 
 	@Override
-	public boolean update(Student student) throws Exception {
-		if (!studentDao.getById(student.getId()).isEmpty()) {
+	public boolean update(Student student) throws ServiceException {
+		try {
 			return studentDao.update(student);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not update this student");
 		}
 	}
 
 	@Override
-	public boolean create(Student student) {
-		return studentDao.create(student);
+	public boolean create(Student student) throws ServiceException {
+		try {
+			return studentDao.create(student);
+		} catch (DaoException e) {
+			throw new ServiceException("can not create student");
+		}
+
 	}
 
 	@Override
-	public boolean addStudentToLecture(Optional<Student> student, Optional<Lecture> lecture) throws Exception {
-		if (lecture.get().getStudent().equals(null)) {
-			if (!studentDao.getById(student.get().getId()).isEmpty()) {
-				return studentDao.addStudentToLecture(student, lecture);
-			} else {
-				throw new Exception("In DB no entity with this id");
-			}
-		} else {
-			throw new Exception("The lecture has already has the student");
+	public boolean addStudentToLecture(Optional<Student> student, Optional<Lecture> lecture) throws ServiceException {
+		try {
+			return studentDao.addStudentToLecture(student, lecture);
+		} catch (DaoException e) {
+			throw new ServiceException("can not add stident to lecture");
 		}
 	}
 
 	@Override
-	public boolean removeStudentFromLecture(Optional<Lecture> lecture) throws Exception {
-		if (!lecture.get().getStudent().equals(null)) {
+	public boolean removeStudentFromLecture(Optional<Lecture> lecture) throws ServiceException {
+		try {
 			return studentDao.removeStudentFromLecture(lecture);
-		} else {
-			throw new Exception("The lecture has already has the audience");
+		} catch (DaoException e) {
+			throw new ServiceException("can not remove student from lecture");
 		}
 	}
 
 	@Override
-	public boolean addStudentToGroup(Optional<Student> student, Optional<Group> group) throws Exception {
-		if (student.get().getGroup().equals(null)) {
-			if (!studentDao.getById(student.get().getId()).isEmpty()) {
-				return studentDao.addStudentToGroup(student, group);
-			} else {
-				throw new Exception("In DB no entity with this id");
-			}
-		} else {
-			throw new Exception("The student has already has the group");
+	public boolean addStudentToGroup(Optional<Student> student, Optional<Group> group) throws ServiceException {
+		try {
+			return studentDao.addStudentToGroup(student, group);
+		} catch (DaoException e) {
+			throw new ServiceException("can not add student to group");
 		}
 	}
 
 	@Override
-	public boolean removeStudentFromGroup(Optional<Student> student) throws Exception {
-		if (!student.get().getGroup().equals(null)) {
+	public boolean removeStudentFromGroup(Optional<Student> student) throws ServiceException {
+		try {
 			return studentDao.removeStudentFromGroup(student);
-		} else {
-			throw new Exception("The lecture has already has the audience");
+		} catch (DaoException e) {
+			throw new ServiceException("can not remove student from group");
 		}
 	}
 }

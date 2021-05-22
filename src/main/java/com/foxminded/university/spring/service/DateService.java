@@ -7,19 +7,20 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.university.model.Date;
 import com.foxminded.university.model.Lecture;
+import com.foxminded.university.spring.service.exception.ServiceException;
 
 @Component
 public interface DateService {
 
-	Optional<Date> getById(int id) throws Exception;
+	Date getById(int id) throws Exception;
 
-	Optional<List<Date>> getAll() throws Exception;
+	List<Date> getAll() throws Exception;
 
 	boolean delete(int id) throws Exception;
 
 	boolean update(Date t) throws Exception;
 
-	boolean create(Date t);
+	boolean create(Date t) throws ServiceException;
 
 	boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture) throws Exception;
 

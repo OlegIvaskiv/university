@@ -1,21 +1,21 @@
 package com.foxminded.university.spring.dao;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
 import com.foxminded.university.model.Course;
+import com.foxminded.university.spring.dao.exception.DaoException;
 
 @Component
 public interface CourseDao extends GenericDao<Course> {
-	Optional<Course> getById(int id);
+	Course getById(int id) throws DaoException;
 
-	Optional<List<Course>> getAll();
+	List<Course> getAll() throws DaoException;
 
-	boolean delete(int id);
+	boolean delete(int id) throws DaoException;
 
-	boolean update(Course t);
+	boolean update(Course t) throws DaoException;
 
-	boolean create(Course t);
+	boolean create(Course t) throws DaoException;
 }

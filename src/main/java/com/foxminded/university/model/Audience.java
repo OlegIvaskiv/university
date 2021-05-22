@@ -7,6 +7,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class Audience {
 	private int id;
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	private int number;
 
 	public Audience(int id, int number) {
@@ -15,15 +20,17 @@ public class Audience {
 		this.number = number;
 	}
 
+	public Audience(int number) {
+		super();
+
+		this.number = number;
+	}
+
 	public Audience() {
 	}
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public int getNumber() {

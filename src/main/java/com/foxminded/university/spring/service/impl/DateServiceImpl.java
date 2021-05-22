@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 import com.foxminded.university.model.Date;
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.spring.dao.DateDao;
+import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.DateService;
+import com.foxminded.university.spring.service.exception.ServiceException;
 
 @Component
 public class DateServiceImpl implements DateService {
@@ -17,66 +19,67 @@ public class DateServiceImpl implements DateService {
 	private DateDao dateDao;
 
 	@Override
-	public Optional<Date> getById(int id) throws Exception {
-		if (!dateDao.getById(id).isEmpty()) {
+	public Date getById(int id) throws ServiceException {
+		try {
 			return dateDao.getById(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not get date by this id");
 		}
 	}
 
 	@Override
-	public Optional<List<Date>> getAll() throws Exception {
-		if (!dateDao.getAll().isEmpty()) {
+	public List<Date> getAll() throws ServiceException {
+		try {
 			return dateDao.getAll();
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not get all datas");
 		}
 	}
 
 	@Override
-	public boolean delete(int id) throws Exception {
-		if (!dateDao.getById(id).isEmpty()) {
+	public boolean delete(int id) throws ServiceException {
+		try {
 			return dateDao.delete(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not delete data by this id");
 		}
 	}
 
 	@Override
-	public boolean update(Date date) throws Exception {
-		if (!dateDao.getById(date.getId()).isEmpty()) {
+	public boolean update(Date date) throws ServiceException {
+		try {
 			return dateDao.update(date);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not update this data");
 		}
 
 	}
 
 	@Override
-	public boolean create(Date date) {
-		return dateDao.create(date);
+	public boolean create(Date date) throws ServiceException {
+		try {
+			return dateDao.create(date);
+		} catch (DaoException e) {
+			throw new ServiceException("can not create student");
+		}
+
 	}
 
 	@Override
-	public boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture) throws Exception {
-		if (lecture.get().getDate().equals(null)) {
-			if (!dateDao.getById(date.get().getId()).isEmpty()) {
-				return dateDao.addDateToLecture(date, lecture);
-			} else {
-				throw new Exception("In DB no entity with this id");
-			}
-		} else {
-			throw new Exception("The lecture has already has the date");
+	public boolean addDateToLecture(Optional<Date> date, Optional<Lecture> lecture) throws ServiceException {
+		try {
+			return dateDao.addDateToLecture(date, lecture);
+		} catch (DaoException e) {
+			throw new ServiceException("can not add data to lecture");
 		}
 	}
 
 	@Override
-	public boolean removeDateFromLecture(Optional<Lecture> lecture) throws Exception {
-		if (!lecture.get().getDate().equals(null)) {
+	public boolean removeDateFromLecture(Optional<Lecture> lecture) throws ServiceException {
+		try {
 			return dateDao.removeDateFromLecture(lecture);
-		} else {
-			throw new Exception("The lecture has not the date");
+		} catch (DaoException e) {
+			throw new ServiceException("can not remove data from lecture");
 		}
 	}
 }

@@ -9,74 +9,76 @@ import org.springframework.stereotype.Component;
 import com.foxminded.university.model.Audience;
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.spring.dao.AudienceDao;
+import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.AudienceService;
+import com.foxminded.university.spring.service.exception.ServiceException;
 
 @Component
 public class AudienceServiceImpl implements AudienceService {
-
 	@Autowired
 	private AudienceDao audienceDao;
 
 	@Override
-	public Optional<Audience> getById(int id) throws Exception {
-		if (!audienceDao.getById(id).isEmpty()) {
+	public Audience getById(int id) throws ServiceException {
+		try {
 			return audienceDao.getById(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not get audience by this id");
 		}
 	}
 
 	@Override
-	public Optional<List<Audience>> getAll() throws Exception {
-		if (!audienceDao.getAll().isEmpty()) {
+	public List<Audience> getAll() throws ServiceException {
+		try {
 			return audienceDao.getAll();
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not get all audiences");
 		}
 	}
 
 	@Override
-	public boolean delete(int id) throws Exception {
-		if (!audienceDao.getById(id).isEmpty()) {
+	public boolean delete(int id) throws ServiceException {
+		try {
 			return audienceDao.delete(id);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not delete audience by this id");
 		}
 	}
 
 	@Override
-	public boolean update(Audience audience) throws Exception {
-		if (!audienceDao.getById(audience.getId()).isEmpty()) {
+	public boolean update(Audience audience) throws ServiceException {
+		try {
 			return audienceDao.update(audience);
-		} else {
-			throw new Exception("In DB no entity with this id");
+		} catch (DaoException e) {
+			throw new ServiceException("can not update this audience");
 		}
 	}
 
 	@Override
-	public boolean create(Audience audience) {
-		return audienceDao.create(audience);
-	}
-
-	@Override
-	public boolean addAudienceToLecture(Optional<Audience> audience, Optional<Lecture> lecture) throws Exception {
-		if (lecture.get().getAudience().equals(null)) {
-			if (!audienceDao.getById(audience.get().getId()).isEmpty()) {
-				return audienceDao.addAudienceToLecture(audience, lecture);
-			} else {
-				throw new Exception("In DB no entity with this id");
-			}
-		} else {
-			throw new Exception("The lecture has already has the audience");
+	public boolean create(Audience audience) throws ServiceException {
+		try {
+			return audienceDao.create(audience);
+		} catch (DaoException e) {
+			throw new ServiceException("can not create audience");
 		}
 	}
 
 	@Override
-	public boolean removeAudiecnceFromLecture(Optional<Lecture> lecture) throws Exception {
-		if (!lecture.get().getAudience().equals(null)) {
+	public boolean addAudienceToLecture(Optional<Audience> audience, Optional<Lecture> lecture)
+			throws ServiceException {
+		try {
+			return audienceDao.addAudienceToLecture(audience, lecture);
+		} catch (DaoException e) {
+			throw new ServiceException("can not add audience to lecture");
+		}
+	}
+
+	@Override
+	public boolean removeAudiecnceFromLecture(Optional<Lecture> lecture) throws ServiceException {
+		try {
 			return audienceDao.removeAudiecnceFromLecture(lecture);
-		} else {
-			throw new Exception("The lecture has already has the audience");
+		} catch (DaoException e) {
+			throw new ServiceException("can not remove audience from lecture");
 		}
 	}
 }

@@ -7,22 +7,23 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.university.model.Audience;
 import com.foxminded.university.model.Lecture;
+import com.foxminded.university.spring.service.exception.ServiceException;
 
 @Component
 public interface AudienceService {
 
-	Optional<Audience> getById(int id) throws Exception;
+	Audience getById(int id) throws ServiceException;
 
-	Optional<List<Audience>> getAll() throws Exception;
+	List<Audience> getAll() throws ServiceException;
 
-	boolean delete(int id) throws Exception;
+	boolean delete(int id) throws ServiceException;
 
-	boolean update(Audience t) throws Exception;
+	boolean update(Audience t) throws ServiceException;
 
-	boolean create(Audience t);
+	boolean create(Audience t) throws ServiceException;
 
-	boolean addAudienceToLecture(Optional<Audience> audience, Optional<Lecture> lecture) throws Exception;
+	boolean addAudienceToLecture(Optional<Audience> audience, Optional<Lecture> lecture) throws ServiceException;
 
-	boolean removeAudiecnceFromLecture(Optional<Lecture> lecture) throws Exception;
+	boolean removeAudiecnceFromLecture(Optional<Lecture> lecture) throws ServiceException;
 
 }
