@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.foxminded.university.model.Course;
 import com.foxminded.university.model.Group;
@@ -13,10 +13,15 @@ import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.GroupService;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
-@Component
+@Service
 public class GroupServiceImpl implements GroupService {
-	@Autowired
+
 	private GroupDao groupDao;
+
+	@Autowired
+	public GroupServiceImpl(GroupDao groupDao) {
+		this.groupDao = groupDao;
+	}
 
 	@Override
 	public Group getById(int id) throws ServiceException {
@@ -66,7 +71,7 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public boolean addGroupToCourse(Optional<Group> group, Optional<Course> course) throws ServiceException {
+	public boolean addGroupToCourse(Group group, Course course) throws ServiceException {
 		try {
 			return groupDao.addGroupToCourse(group, course);
 		} catch (DaoException e) {

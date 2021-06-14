@@ -2,15 +2,8 @@ package com.foxminded.university.model;
 
 import java.util.Objects;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Course {
 	private int id;
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	private String name;
 
@@ -36,13 +29,17 @@ public class Course {
 		return name;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return "Id : " + this.id + "\tName : " + this.name;
+		return "CourseId : " + this.id + "\tCourseName : " + this.name;
 	}
 
 	@Override

@@ -18,17 +18,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.foxminded.university.model.Audience;
 import com.foxminded.university.model.Lecture;
-import com.foxminded.university.spring.dao.impl.AudienceDAOimpl;
-import com.foxminded.university.spring.dao.impl.LectureDAOimpl;
+import com.foxminded.university.spring.dao.impl.AudienceDaoImpl;
+import com.foxminded.university.spring.dao.impl.LectureDaoImpl;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
 @ExtendWith(MockitoExtension.class)
 public class AudienceServiceTest {
     @Mock
-    private LectureDAOimpl lectureDaoimpl;
+    private LectureDaoImpl lectureDaoimpl;
 
     @Mock
-    private AudienceDAOimpl audienceDaoimpl;
+    private AudienceDaoImpl audienceDaoimpl;
 
     @InjectMocks
     AudienceServiceImpl audienceServiceImpl;

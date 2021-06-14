@@ -2,20 +2,17 @@ package com.foxminded.university.spring.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 import com.foxminded.university.model.Course;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
-@Component
 public interface CourseService {
-	Course getById(int id) throws Exception;
+	Course getById(int id) throws ServiceException;
 
-	List<Course> getAll() throws Exception;
+	List<Course> getAll() throws ServiceException;
 
-	boolean delete(int id) throws Exception;
+	boolean delete(int id) throws ServiceException;
 
-	boolean update(Course t) throws Exception;
+	boolean update(Course t) throws ServiceException;
 
 	boolean create(Course t) throws ServiceException;
 }

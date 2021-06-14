@@ -20,8 +20,8 @@ import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.mapper.AudienceMapper;
 
 @Component
-public class AudienceDAOimpl implements AudienceDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AudienceDAOimpl.class);
+public class AudienceDaoImpl implements AudienceDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AudienceDaoImpl.class);
 
     private JdbcTemplate jdbcTemplate;
     private AudienceMapper audienceMapper;
@@ -34,7 +34,7 @@ public class AudienceDAOimpl implements AudienceDao {
     private static final String SQL_REMOVE_AUDIENCE = "UPDATE lecture SET audience_id = NULL WHERE lecture_id = ?;";
 
     @Autowired
-    public AudienceDAOimpl(DataSource dataSource, AudienceMapper audienceMapper) {
+    public AudienceDaoImpl(DataSource dataSource, AudienceMapper audienceMapper) {
         this.audienceMapper = audienceMapper;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }

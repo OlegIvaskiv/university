@@ -2,9 +2,6 @@ package com.foxminded.university.model;
 
 import java.util.Objects;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Group {
 	private int id;
 	private Course course;
@@ -52,7 +49,7 @@ public class Group {
 
 	@Override
 	public String toString() {
-		return "Id : " + this.id + "\tCourse  : " + this.course + "\tName : " + this.name;
+		return "GroupId : " + this.id + "\tCourse  : " + this.course + "\tGroupName : " + this.name;
 	}
 
 	@Override

@@ -2,17 +2,13 @@ package com.foxminded.university.model;
 
 import java.util.Objects;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Audience {
 	private int id;
+	private int number;
 
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	private int number;
 
 	public Audience(int id, int number) {
 		super();

@@ -20,8 +20,8 @@ import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.mapper.DateMapper;
 
 @Component
-public class DateDAOimpl implements DateDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DateDAOimpl.class);
+public class DateDaoImpl implements DateDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateDaoImpl.class);
     private JdbcTemplate jdbcTemplate;
     private DateMapper dateMapper;
     private static final String SQL_FIND_DATE = "SELECT * FROM date WHERE date_id = ?;";
@@ -33,7 +33,7 @@ public class DateDAOimpl implements DateDao {
     private static final String SQL_REMOVE_DATE = "UPDATE lecture SET date_id = NULL WHERE lecture_id = ?;";
 
     @Autowired
-    public DateDAOimpl(DataSource dataSource, DateMapper dateMapper) {
+    public DateDaoImpl(DataSource dataSource, DateMapper dateMapper) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.dateMapper = dateMapper;
     }

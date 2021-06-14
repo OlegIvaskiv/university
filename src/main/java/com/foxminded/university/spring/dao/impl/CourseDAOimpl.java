@@ -18,8 +18,8 @@ import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.mapper.CourseMapper;
 
 @Component
-public class CourseDAOimpl implements CourseDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CourseDAOimpl.class);
+public class CourseDaoImpl implements CourseDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseDaoImpl.class);
     private JdbcTemplate jdbcTemplate;
     private CourseMapper courseMapper;
     private static final String SQL_FIND_COURSE = "SELECT * FROM course WHERE course_id = ?;";
@@ -29,7 +29,7 @@ public class CourseDAOimpl implements CourseDao {
     private static final String SQL_INSERT_COURSE = "INSERT INTO course(course_name) VALUES(?);";
 
     @Autowired
-    public CourseDAOimpl(DataSource dataSource, CourseMapper courseMapper) {
+    public CourseDaoImpl(DataSource dataSource, CourseMapper courseMapper) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.courseMapper = courseMapper;
     }

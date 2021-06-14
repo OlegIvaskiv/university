@@ -19,13 +19,13 @@ import org.springframework.test.context.jdbc.Sql;
 
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.model.Teacher;
-import com.foxminded.university.spring.dao.impl.TeacherDAOimpl;
+import com.foxminded.university.spring.dao.impl.TeacherDaoImpl;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
 @ExtendWith(MockitoExtension.class)
 public class TeacherServiceTest {
     @Mock
-    private TeacherDAOimpl teacherDaoImpl;
+    private TeacherDaoImpl teacherDaoImpl;
 
     @InjectMocks
     TeacherServiceImpl teacherServiceImpl;

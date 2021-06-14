@@ -18,14 +18,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.foxminded.university.model.Date;
 import com.foxminded.university.model.Lecture;
-import com.foxminded.university.spring.dao.impl.DateDAOimpl;
+import com.foxminded.university.spring.dao.impl.DateDaoImpl;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
 @ExtendWith(MockitoExtension.class)
 public class DateServiceTest {
 
     @Mock
-    private DateDAOimpl dateDaoImpl;
+    private DateDaoImpl dateDaoImpl;
 
     @InjectMocks
     DateServiceImpl dateServiceImpl;

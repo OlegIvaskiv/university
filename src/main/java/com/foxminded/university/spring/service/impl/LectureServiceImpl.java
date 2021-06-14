@@ -3,7 +3,7 @@ package com.foxminded.university.spring.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.spring.dao.LectureDao;
@@ -11,10 +11,15 @@ import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.LectureService;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
-@Component
+@Service
 public class LectureServiceImpl implements LectureService {
-	@Autowired
+
 	private LectureDao lectureDao;
+
+	@Autowired
+	public LectureServiceImpl(LectureDao lectureDao) {
+		this.lectureDao = lectureDao;
+	}
 
 	@Override
 	public Lecture getById(int id) throws ServiceException {

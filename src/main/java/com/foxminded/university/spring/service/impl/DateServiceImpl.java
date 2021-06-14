@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.foxminded.university.model.Date;
 import com.foxminded.university.model.Lecture;
@@ -13,10 +13,15 @@ import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.DateService;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
-@Component
+@Service
 public class DateServiceImpl implements DateService {
-	@Autowired
+
 	private DateDao dateDao;
+
+	@Autowired
+	public DateServiceImpl(DateDao dateDao) {
+		this.dateDao = dateDao;
+	}
 
 	@Override
 	public Date getById(int id) throws ServiceException {

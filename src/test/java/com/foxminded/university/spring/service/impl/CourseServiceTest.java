@@ -17,13 +17,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.foxminded.university.model.Course;
-import com.foxminded.university.spring.dao.impl.CourseDAOimpl;
+import com.foxminded.university.spring.dao.impl.CourseDaoImpl;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
 @ExtendWith(MockitoExtension.class)
 public class CourseServiceTest {
     @Mock
-    private CourseDAOimpl courseServiceDaoimpl;
+    private CourseDaoImpl courseServiceDaoimpl;
 
     @InjectMocks
     CourseServiceImpl courseServiceImpl;

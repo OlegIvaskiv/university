@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.foxminded.university.model.Group;
 import com.foxminded.university.model.Lecture;
@@ -14,10 +14,15 @@ import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.StudentService;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
-@Component
+@Service
 public class StudentServiceImpl implements StudentService {
-	@Autowired
+
 	private StudentDao studentDao;
+
+	@Autowired
+	public StudentServiceImpl(StudentDao studentDao) {
+		this.studentDao = studentDao;
+	}
 
 	@Override
 	public Student getById(int id) throws ServiceException {

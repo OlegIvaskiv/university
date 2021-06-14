@@ -21,7 +21,7 @@ public interface GroupDao extends GenericDao<Group> {
 
 	boolean create(Group t) throws DaoException;
 
-	boolean addGroupToCourse(Optional<Group> group, Optional<Course> course) throws DaoException;
+	boolean addGroupToCourse(Group group, Course course) throws DaoException;
 
 	boolean removeGroupFromCourse(Optional<Group> group) throws DaoException;
 }

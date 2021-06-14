@@ -2,16 +2,9 @@ package com.foxminded.university.model;
 
 import java.util.Objects;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Date {
+
 	private int id;
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	private String day;
 	private String mounth;
 	private String year;
@@ -40,6 +33,10 @@ public class Date {
 
 	public String getDay() {
 		return day;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setDay(String day) {

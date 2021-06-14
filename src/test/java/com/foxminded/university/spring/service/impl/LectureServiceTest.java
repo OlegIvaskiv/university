@@ -23,13 +23,13 @@ import com.foxminded.university.model.Group;
 import com.foxminded.university.model.Lecture;
 import com.foxminded.university.model.Student;
 import com.foxminded.university.model.Teacher;
-import com.foxminded.university.spring.dao.impl.LectureDAOimpl;
+import com.foxminded.university.spring.dao.impl.LectureDaoImpl;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
 @ExtendWith(MockitoExtension.class)
 public class LectureServiceTest {
     @Mock
-    private LectureDAOimpl lectureDaoimpl;
+    private LectureDaoImpl lectureDaoimpl;
 
     @InjectMocks
     LectureServiceImpl lectureServiceImpl;

@@ -3,7 +3,7 @@ package com.foxminded.university.spring.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.foxminded.university.model.Course;
 import com.foxminded.university.spring.dao.CourseDao;
@@ -11,10 +11,15 @@ import com.foxminded.university.spring.dao.exception.DaoException;
 import com.foxminded.university.spring.service.CourseService;
 import com.foxminded.university.spring.service.exception.ServiceException;
 
-@Component
+@Service
 public class CourseServiceImpl implements CourseService {
-	@Autowired
+
 	private CourseDao courseDao;
+
+	@Autowired
+	public CourseServiceImpl(CourseDao courseDao) {
+		this.courseDao = courseDao;
+	}
 
 	@Override
 	public Course getById(int id) throws ServiceException {
